@@ -12,6 +12,9 @@ fi
 map_path="$HOME/catkin_ws/src/map"
 rviz_path="$HOME/catkin_ws/src/rvizConfig"
 
+
+(cd ~/catkin_ws/ && source devel/setup.bash)
+
 $term_name "killall gzserver && killall gazebo " &
 sleep 1
 
@@ -23,7 +26,7 @@ $term_name " roslaunch turtlebot_gazebo gmapping_demo.launch " &
 
 sleep 5
 
-$term_name " roslaunch turtlebot_interactions turtlebot_rviz_launches rviz_config_file=$rviz_path/rviz.rviz " &
+$term_name " roslaunch turtlebot_rviz_launchers view_navigation.launch" &
 
 sleep 5
 
