@@ -27,84 +27,110 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// %Tag(FULLTEXT)%
-// %Tag(INCLUDES)%
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-// %EndTag(INCLUDES)%
 
-// %Tag(INIT)%
 int main( int argc, char** argv )
 {
   ros::init(argc, argv, "add_markers");
   ros::NodeHandle n;
   ros::Rate r(1);
   ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-// %EndTag(INIT)%
 
   // Set our initial shape type to be a cube
-// %Tag(SHAPE_INIT)%
-  uint32_t shape = visualization_msgs::Marker::SPHERE;
-// %EndTag(SHAPE_INIT)%
+  uint32_t shape = visualization_msgs::Marker::CUBE;
+  bool display_pick = true;
+  bool display_place = true;
 
-// %Tag(MARKER_INIT)%
   while (ros::ok())
   {
-    visualization_msgs::Marker marker;
-    // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-    marker.header.frame_id = "/map";
-    marker.header.stamp = ros::Time::now();
-// %EndTag(MARKER_INIT)%
+      if display_pick {
+          visualization_msgs::Marker pick_marker;
+          // Set the frame ID and timestamp.  See the TF tutorials for information on these.
+          pick_marker.header.frame_id = "/map";
+          pick_marker.header.stamp = ros::Time::now();
 
-    // Set the namespace and id for this marker.  This serves to create a unique ID
-    // Any marker sent with the same namespace and id will overwrite the old one
-// %Tag(NS_ID)%
-    marker.ns = "basic_shapes";
-    marker.id = 0;
-// %EndTag(NS_ID)%
+          // Set the namespace and id for this marker.  This serves to create a unique ID
+          // Any marker sent with the same namespace and id will overwrite the old one
+          pick_marker.ns = "basic_shapes";
+          pick_marker.id = 0;
 
-    // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
-// %Tag(TYPE)%
-    marker.type = shape;
-// %EndTag(TYPE)%
+          // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
+          pick_marker.type = shape;
 
-    // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
-// %Tag(ACTION)%
-    marker.action = visualization_msgs::Marker::ADD;
-// %EndTag(ACTION)%
+          // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
+          pick_marker.action = visualization_msgs::Marker::ADD;
 
-    // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-// %Tag(POSE)%
-    marker.pose.position.x = 0;
-    marker.pose.position.y = 0;
-    marker.pose.position.z = 0;
-    marker.pose.orientation.x = 0.0;
-    marker.pose.orientation.y = 0.0;
-    marker.pose.orientation.z = 0.0;
-    marker.pose.orientation.w = 1.0;
-// %EndTag(POSE)%
+          // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
+          pick_marker.pose.position.x = 0;
+          pick_marker.pose.position.y = 0;
+          pick_marker.pose.position.z = 0.1;
+          pick_marker.pose.orientation.x = 0.0;
+          pick_marker.pose.orientation.y = 0.0;
+          pick_marker.pose.orientation.z = 0.0;
+          pick_marker.pose.orientation.w = 1.0;
 
-    // Set the scale of the marker -- 1x1x1 here means 1m on a side
-// %Tag(SCALE)%
-    marker.scale.x = 1.0;
-    marker.scale.y = 1.0;
-    marker.scale.z = 1.0;
-// %EndTag(SCALE)%
+          // Set the scale of the marker -- 1x1x1 here means 1m on a side
+          pick_marker.scale.x = 0.2;
+          pick_marker.scale.y = 0.2;
+          pick_marker.scale.z = 0.2;
 
-    // Set the color -- be sure to set alpha to something non-zero!
-// %Tag(COLOR)%
-    marker.color.r = 0.0f;
-    marker.color.g = 255.0f;
-    marker.color.b = 68.0f;
-    marker.color.a = 1.0;
-// %EndTag(COLOR)%
+          // Set the color -- be sure to set alpha to something non-zero!
 
-// %Tag(LIFETIME)%
-    marker.lifetime = ros::Duration();
-// %EndTag(LIFETIME)%
+          pick_marker.color.r = 1.0f;
+          pick_marker.color.g = 0.0f;
+          pick_marker.color.b = 0.0f;
+          pick_marker.color.a = 1.0;
+
+          pick_marker.lifetime = ros::Duration();
+          marker_pub.publish(pick_marker);
+      }
+
+      if display_place {
+          visualization_msgs::Marker place_marker;
+          // Set the frame ID and timestamp.  See the TF tutorials for information on these.
+          place_marker.header.frame_id = "/map";
+          place_marker.header.stamp = ros::Time::now();
+
+          // Set the namespace and id for this marker.  This serves to create a unique ID
+          // Any marker sent with the same namespace and id will overwrite the old one
+          place_marker.ns = "basic_shapes";
+          place_marker.id = 0;
+
+          // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
+          place_marker.type = shape;
+
+          // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
+          place_marker.action = visualization_msgs::Marker::ADD;
+
+          // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
+          place_marker.pose.position.x = 0;
+          place_marker.pose.position.y = 0;
+          place_marker.pose.position.z = 0.1;
+          place_marker.pose.orientation.x = 0.0;
+          place_marker.pose.orientation.y = 0.0;
+          place_marker.pose.orientation.z = 0.0;
+          place_marker.pose.orientation.w = 1.0;
+
+          // Set the scale of the marker -- 1x1x1 here means 1m on a side
+          place_marker.scale.x = 0.2;
+          place_marker.scale.y = 0.2;
+          place_marker.scale.z = 0.2;
+
+          // Set the color -- be sure to set alpha to something non-zero!
+
+          place_marker.color.r = 1.0f;
+          place_marker.color.g = 0.0f;
+          place_marker.color.b = 0.0f;
+          place_marker.color.a = 1.0;
+
+          place_marker.lifetime = ros::Duration();
+          marker_pub.publish(place_marker);
+
+      }
 
     // Publish the marker
-// %Tag(PUBLISH)%
+    /*
     while (marker_pub.getNumSubscribers() < 1)
     {
       if (!ros::ok())
@@ -114,34 +140,14 @@ int main( int argc, char** argv )
       ROS_WARN_ONCE("Please create a subscriber to the marker");
       sleep(1);
     }
-    marker_pub.publish(marker);
-    ros::Duration(5.0).sleep();
-    marker.color.a = 0.0; //make the current marker transparent (like it was picked up)
-    marker_pub.publish(marker);
-
-    marker.pose.position.x = 1;
-    marker.pose.position.y = 0;
-    marker.pose.position.z = 0;
-    marker.pose.orientation.x = 0.0;
-    marker.pose.orientation.y = 0.0;
-    marker.pose.orientation.z = 0.0;
-    marker.pose.orientation.w = 1.0;
-
-    marker.color.r = 255.0f;
-    marker.color.g = 0.0f;
-    marker.color.b = 0.0f;
-    marker.color.a = 1.0;
-
-    ros::Duration(5.0).sleep();
-
-    marker_pub.publish(marker);
+    */
 
 
 
-// %EndTag(PUBLISH)%
+
+
 
     // Cycle between different shapes
-// %Tag(CYCLE_SHAPES)%
     /*
     switch (shape)
     {
@@ -159,11 +165,7 @@ int main( int argc, char** argv )
       break;
     }
     */
-// %EndTag(CYCLE_SHAPES)%
 
-// %Tag(SLEEP_END)%
     r.sleep();
   }
-// %EndTag(SLEEP_END)%
 }
-// %EndTag(FULLTEXT)%
