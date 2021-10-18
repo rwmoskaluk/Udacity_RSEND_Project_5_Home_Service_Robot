@@ -22,7 +22,7 @@ $term_name " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$worl
 
 sleep 5
 
-$term_name " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=$map_path/map.pgm " &
+$term_name " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=$map_path/map_final.pgm " &
 
 sleep 5
 
