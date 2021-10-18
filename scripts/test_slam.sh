@@ -10,8 +10,6 @@ else
 fi
 
 world_path="$HOME/catkin_ws/src/worlds"
-rviz_path="$HOME/catkin_ws/src/rvizConfig"
-
 
 (cd $HOME/catkin_ws/ && source devel/setup.bash)
 
