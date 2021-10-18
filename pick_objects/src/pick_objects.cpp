@@ -20,12 +20,15 @@ int main(int argc, char** argv){
   move_base_msgs::MoveBaseGoal pick_goal;
 
   // set up the frame parameters
-  pick_goal.target_pose.header.frame_id = "map";
+  pick_goal.target_pose.header.frame_id = "/map";
   pick_goal.target_pose.header.stamp = ros::Time::now();
 
   // Define a position and orientation for the robot to reach
-  pick_goal.target_pose.pose.position.x = 1.0;
+  pick_goal.target_pose.pose.position.x = 15.0;
+  pick_goal.target_pose.pose.position.y = -9.0;
+  pick_goal.target_pose.pose.position.z = 0.0;
   pick_goal.target_pose.pose.orientation.w = 1.0;
+
 
    // Send the goal position and orientation for the robot to reach
   ROS_INFO("Sending pick goal");
@@ -52,8 +55,10 @@ int main(int argc, char** argv){
   place_goal.target_pose.header.stamp = ros::Time::now();
 
   // Define a position and orientation for the robot to reach
-  place_goal.target_pose.pose.position.x = -1.0;
-  place_goal.target_pose.pose.orientation.w = -1.0;
+  place_goal.target_pose.pose.position.x = 0.0;
+  pick_goal.target_pose.pose.position.y = 0.0;
+  pick_goal.target_pose.pose.position.z = 0.0;
+  place_goal.target_pose.pose.orientation.w = 1.0;
 
   // Send the goal position and orientation for the robot to reach
   ROS_INFO("Sending place goal");
