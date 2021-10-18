@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#tests slam setup for project
 if command -v xterm > /dev/null 2>&1;
 then
   term_name="xterm -e"
@@ -10,10 +9,9 @@ else
 fi
 
 map_path="$HOME/catkin_ws/src/map"
-rviz_path="$HOME/catkin_ws/src/rvizConfig"
-
 
 (cd $HOME/catkin_ws/ && source devel/setup.bash)
+
 
 $term_name "killall gzserver && killall gazebo " &
 sleep 1
@@ -22,12 +20,8 @@ $term_name " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$map_
 
 sleep 5
 
-$term_name " roslaunch turtlebot_gazebo gmapping_demo.launch " &
+$term_name " roslaunch turtlebot_gazebo amcl_demo.launch " &
 
 sleep 5
 
-$term_name " roslaunch turtlebot_rviz_launchers view_navigation.launch" &
-
-sleep 5
-
-$term_name " roslaunch turtlebot_teleop keyboard_teleop.launch"
+$term_name " roslaunch turtlebot_rviz_launchers view_navigation.launch"
