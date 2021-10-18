@@ -8,16 +8,17 @@ else
   term_name="gnome-terminal -- bash -c"
 fi
 
+world_path="$HOME/catkin_ws/src/worlds"
 map_path="$HOME/catkin_ws/src/map"
 
 $term_name "killall gzserver && killall gazebo " &
 sleep 1
 
-$term_name " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$map_path/myworld.world extra_gazebo_args:="--verbose"" &
+$term_name " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$world_path/myworld.world extra_gazebo_args:="--verbose"" &
 
 sleep 5
 
-$term_name " roslaunch turtlebot_gazebo amcl_demo.launch " &
+$term_name " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=$map_path/map.pgm " &
 
 sleep 5
 
