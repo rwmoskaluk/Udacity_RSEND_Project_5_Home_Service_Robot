@@ -94,8 +94,8 @@ int main( int argc, char** argv )
     // Set the color -- be sure to set alpha to something non-zero!
 // %Tag(COLOR)%
     marker.color.r = 0.0f;
-    marker.color.g = 1.0f;
-    marker.color.b = 0.0f;
+    marker.color.g = 255.0f;
+    marker.color.b = 68.0f;
     marker.color.a = 1.0;
 // %EndTag(COLOR)%
 
@@ -115,6 +115,29 @@ int main( int argc, char** argv )
       sleep(1);
     }
     marker_pub.publish(marker);
+    ros::Duration(5.0).sleep();
+    marker.color.a = 0.0; //make the current marker transparent (like it was picked up)
+    marker_pub.publish(marker);
+
+    marker.pose.position.x = 1;
+    marker.pose.position.y = 0;
+    marker.pose.position.z = 0;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+
+    marker.color.r = 255.0f;
+    marker.color.g = 0.0f;
+    marker.color.b = 0.0f;
+    marker.color.a = 1.0;
+
+    ros::Duration(5.0).sleep();
+
+    marker_pub.publish(marker);
+
+
+
 // %EndTag(PUBLISH)%
 
     // Cycle between different shapes
