@@ -56,8 +56,8 @@ int main(int argc, char** argv){
 
   // Define a position and orientation for the robot to reach
   place_goal.target_pose.pose.position.x = 0.0;
-  pick_goal.target_pose.pose.position.y = 0.0;
-  pick_goal.target_pose.pose.position.z = 0.0;
+  place_goal.target_pose.pose.position.y = 0.0;
+  place_goal.target_pose.pose.position.z = 0.0;
   place_goal.target_pose.pose.orientation.w = 1.0;
 
   // Send the goal position and orientation for the robot to reach
