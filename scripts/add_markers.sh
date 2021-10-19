@@ -22,7 +22,7 @@ $term_name " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=$map_path/map
 
 sleep 5
 
-$term_name " rosrun add_markers add_markers_node " &
+$term_name " rosrun add_markers add_markers_node_tester " &
 
 sleep 5
 

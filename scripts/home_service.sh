@@ -29,10 +29,10 @@ sleep 5
 
 $term_name " rosrun pick_objects pick_objects_node " &
 
-sleep 5
+sleep 1
 
 $term_name " rosrun add_markers add_markers_node " &
 
-sleep 5
+sleep 1
 
 $term_name " rosrun rviz rviz -d $rviz_path "

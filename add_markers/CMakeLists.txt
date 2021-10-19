@@ -134,6 +134,8 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/add_markers_node.cpp)
 add_executable(add_markers_node src/add_markers.cpp)
+add_executable(add_markers_node_tester src/add_markers_tester.cpp)
+
 
 
 ## Rename C++ executable without prefix
