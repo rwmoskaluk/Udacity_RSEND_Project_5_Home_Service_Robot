@@ -80,14 +80,25 @@ int main(int argc, char **argv) {
                 // hide marker state
                 ROS_WARN_ONCE("current state = %i", current_state);
                 ROS_WARN_ONCE("Pick marker being hidden");
-                marker.action = visualization_msgs::Marker::DELETE;
+                //marker.action = visualization_msgs::Marker::DELETE; //doesn't seem to work as intended
+                marker.ns = "pick_marker";
+                marker.id = 0;
+                marker.action = visualization_msgs::Marker::ADD;
+                marker.color.a = 0.0;
+
                 marker_pub.publish(marker);
                 break;
             case 2:
                 // wait 5 second state
                 ROS_WARN_ONCE("current state = %i", current_state);
                 ROS_WARN_ONCE("Simulating pickup for 5 seconds");
-                marker.action = visualization_msgs::Marker::DELETE;
+                //marker.action = visualization_msgs::Marker::DELETE; //doesn't seem to work as intended
+                marker.ns = "pick_marker";
+                marker.id = 0;
+                marker.action = visualization_msgs::Marker::ADD;
+                marker.color.a = 0.0;
+
+
                 marker_pub.publish(marker);
                 break;
 
