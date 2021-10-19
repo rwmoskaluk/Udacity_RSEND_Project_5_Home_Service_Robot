@@ -27,8 +27,8 @@ int main(int argc, char** argv){
         ROS_INFO("Waiting for the move_base action server to come up");
     }
 
-    pick_marker_goal.publish(pick_goal_state);
-    place_marker_goal.publish(place_goal_state);
+    pick_marker_goal.publish(pick_goal_msg);
+    place_marker_goal.publish(place_goal_msg);
 
 
     if (!pick_goal_state && !place_goal_state) {
