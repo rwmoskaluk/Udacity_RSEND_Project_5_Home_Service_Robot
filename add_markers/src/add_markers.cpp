@@ -5,10 +5,10 @@
 int current_state = 0;
 
 void robot_stateCallback(const std_msgs::Int8::ConstPtr &robot_state) {
-    std_msgs::Int8 state_value;
+    //std_msgs::Int8 state_value;
 
-    state_value = robot_state->data;
-    current_state = state_value.data;
+    //state_value = robot_state->data;
+    current_state = robot_state->data;
     ROS_INFO("The current state goal is [%d]", robot_state->data);
 }
 

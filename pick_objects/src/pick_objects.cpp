@@ -38,83 +38,83 @@ int main(int argc, char** argv){
     place_goal.target_pose.header.frame_id = "/map";
     place_goal.target_pose.header.stamp = ros::Time::now();
 
-    state_pub.publish(current_state);
+    state_pub.publish(state_value);
 
-    switch (current_state) {
-        case 0:
-            //pick display state, setting pick goal
-            // Define a position and orientation for the robot to reach
-            pick_goal.target_pose.pose.position.x = 2.0;
-            pick_goal.target_pose.pose.position.y = -1.0;
-            pick_goal.target_pose.pose.position.z = 0.1;
-            pick_goal.target_pose.pose.orientation.w = 1.0;
+    while (ros::ok()) {
+        switch (current_state) {
+            case 0:
+                //pick display state, setting pick goal
+                // Define a position and orientation for the robot to reach
+                pick_goal.target_pose.pose.position.x = 2.0;
+                pick_goal.target_pose.pose.position.y = -1.0;
+                pick_goal.target_pose.pose.position.z = 0.1;
+                pick_goal.target_pose.pose.orientation.w = 1.0;
 
 
-            // Send the goal position and orientation for the robot to reach
-            ROS_INFO("Sending pick goal");
-            ac.sendGoal(pick_goal);
+                // Send the goal position and orientation for the robot to reach
+                ROS_INFO("Sending pick goal");
+                ac.sendGoal(pick_goal);
 
-            // Wait an infinite time for the results
-            ac.waitForResult();
+                // Wait an infinite time for the results
+                ac.waitForResult();
 
-            // Check if the robot reached the pick_goal
-            if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
-                ROS_INFO("Robot arrived at pick_goal");
-                current_state = 1;
-                state_value.data = 1;
+                // Check if the robot reached the pick_goal
+                if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
+                    ROS_INFO("Robot arrived at pick_goal");
+                    current_state = 1;
+                    state_value.data = 1;
+                    state_pub.publish(state_value);
+                } else {
+                    ROS_INFO("The robot failed to move to the pick_goal for some reason");
+                }
+                break;
+            case 1:
+                //hide marker after pickup
+                ROS_INFO("Hiding pick marker");
+                current_state = 2;
+                state_value.data = 2;
                 state_pub.publish(state_value);
-            } else {
-                ROS_INFO("The robot failed to move to the pick_goal for some reason");
-            }
-            break;
-        case 1:
-            //hide marker after pickup
-            ROS_INFO("Hiding pick marker");
-            current_state = 2;
-            state_value.data = 2;
-            state_pub.publish(state_value);
-            break;
-        case 2:
-            //wait 5 seconds after marker is hidden
-            ROS_INFO("waiting 5 seconds");
-            r.sleep();
-            current_state = 3;
-            state_value.data = 3;
-            state_pub.publish(state_value);
-            break;
-        case 3:
-            //place display state
-            // Define a position and orientation for the robot to reach
-            place_goal.target_pose.pose.position.x = -4.0;
-            place_goal.target_pose.pose.position.y = 1.0;
-            place_goal.target_pose.pose.position.z = 0.1;
-            place_goal.target_pose.pose.orientation.w = 1.0;
-
-            // Send the goal position and orientation for the robot to reach
-            ROS_INFO("Sending place goal");
-            ac.sendGoal(place_goal);
-
-            // Wait an infinite time for the results
-            ac.waitForResult();
-
-            // Check if the robot reached the place_goal
-            if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
-                ROS_INFO("Robot arrived at the place_goal");
-                current_state = 4;
-                state_value.data = 4;
+                break;
+            case 2:
+                //wait 5 seconds after marker is hidden
+                ROS_INFO("waiting 5 seconds");
+                r.sleep();
+                current_state = 3;
+                state_value.data = 3;
                 state_pub.publish(state_value);
-            } else {
-                ROS_INFO("The base failed to move to the place_goal for some reason");
-            }
-            break;
-        case 4:
-            //mission complete
-            ROS_INFO("Completed states");
-            state_pub.publish(state_value);
-            break;
-        default:
-            break;
+                break;
+            case 3:
+                //place display state
+                // Define a position and orientation for the robot to reach
+                place_goal.target_pose.pose.position.x = -4.0;
+                place_goal.target_pose.pose.position.y = 1.0;
+                place_goal.target_pose.pose.position.z = 0.1;
+                place_goal.target_pose.pose.orientation.w = 1.0;
+
+                // Send the goal position and orientation for the robot to reach
+                ROS_INFO("Sending place goal");
+                ac.sendGoal(place_goal);
+
+                // Wait an infinite time for the results
+                ac.waitForResult();
+
+                // Check if the robot reached the place_goal
+                if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
+                    ROS_INFO("Robot arrived at the place_goal");
+                    current_state = 4;
+                    state_value.data = 4;
+                    state_pub.publish(state_value);
+                } else {
+                    ROS_INFO("The base failed to move to the place_goal for some reason");
+                }
+                break;
+            case 4:
+                //mission complete
+                ROS_INFO("Completed states");
+                state_pub.publish(state_value);
+                break;
+            default:
+                break;
+        }
     }
-
-    return 0;
 }
