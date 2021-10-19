@@ -152,6 +152,9 @@ add_executable(add_markers_node_tester src/add_markers_tester.cpp)
 target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}
 )
+target_link_libraries(add_markers_node_tester
+        ${catkin_LIBRARIES}
+        )
 
 #############
 ## Install ##

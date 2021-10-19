@@ -5,7 +5,7 @@
 int current_state = 0;
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "add_markers");
+    ros::init(argc, argv, "add_markers_tester");
     ros::NodeHandle n;
     ros::Rate r(5);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
