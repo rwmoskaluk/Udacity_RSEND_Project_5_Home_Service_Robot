@@ -25,17 +25,23 @@ int main(int argc, char** argv){
         ROS_INFO("Waiting for the move_base action server to come up");
     }
 
+    move_base_msgs::MoveBaseGoal pick_goal;
+
+    // set up the frame parameters
+    pick_goal.target_pose.header.frame_id = "/map";
+    pick_goal.target_pose.header.stamp = ros::Time::now();
+
+    move_base_msgs::MoveBaseGoal place_goal;
+
+    // set up the frame parameters
+    place_goal.target_pose.header.frame_id = "/map";
+    place_goal.target_pose.header.stamp = ros::Time::now();
+
     state_pub.publish(current_state);
 
     switch (current_state) {
         case 0:
             //pick display state, setting pick goal
-            move_base_msgs::MoveBaseGoal pick_goal;
-
-            // set up the frame parameters
-            pick_goal.target_pose.header.frame_id = "/map";
-            pick_goal.target_pose.header.stamp = ros::Time::now();
-
             // Define a position and orientation for the robot to reach
             pick_goal.target_pose.pose.position.x = 2.0;
             pick_goal.target_pose.pose.position.y = -1.0;
@@ -74,12 +80,6 @@ int main(int argc, char** argv){
             break;
         case 3:
             //place display state
-            move_base_msgs::MoveBaseGoal place_goal;
-
-            // set up the frame parameters
-            place_goal.target_pose.header.frame_id = "/map";
-            place_goal.target_pose.header.stamp = ros::Time::now();
-
             // Define a position and orientation for the robot to reach
             place_goal.target_pose.pose.position.x = -4.0;
             place_goal.target_pose.pose.position.y = 1.0;
