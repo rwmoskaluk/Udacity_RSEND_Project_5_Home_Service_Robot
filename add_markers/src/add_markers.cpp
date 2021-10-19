@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include "std_msgs/Bool.h"
+#include "std_msgs/Int8.h"
 
 int8_t current_state = 0;
 
