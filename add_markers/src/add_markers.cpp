@@ -25,8 +25,8 @@ int main( int argc, char** argv )
   ros::NodeHandle n;
   ros::Rate r(1);
   ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-  ros::Subscriber pick_sub = n.subscribe("/pick_marker_goal", 10, pickgoalCallback);
-  ros::Subscriber place_sub = n.subscribe("/place_marker_goal", 10, placegoalCallback);
+  ros::Subscriber pick_sub = n.subscribe("/pick_marker_goal", 1, pickgoalCallback);
+  ros::Subscriber place_sub = n.subscribe("/place_marker_goal", 1, placegoalCallback);
 
   // Set our initial shape type to be a cube
   uint32_t shape = visualization_msgs::Marker::CUBE;

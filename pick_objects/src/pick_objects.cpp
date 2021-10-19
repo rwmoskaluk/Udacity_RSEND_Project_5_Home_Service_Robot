@@ -7,6 +7,8 @@
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 bool pick_goal_state = false;
 bool place_goal_state = false;
+std_msgs::Bool pick_goal_msg;
+std_msgs::Bool place_goal_msg;
 
 int main(int argc, char** argv){
     // Initialize the simple_navigation_goals node
@@ -54,10 +56,11 @@ int main(int argc, char** argv){
         if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
             ROS_INFO("Robot arrived at pick_goal");
             pick_goal_state = true;
+            pick_goal_msg.data = true;
             // Wait 5 sec for move_base action server to come up
             while (!ac.waitForServer(ros::Duration(5.0))) {
                 ROS_INFO("Waiting for 5 seconds at pick_goal");
-                pick_marker_goal.publish(pick_goal_state);
+                pick_marker_goal.publish(pick_goal_msg);
             }
         } else {
             ROS_INFO("The robot failed to move to the pick_goal for some reason");
@@ -90,9 +93,10 @@ int main(int argc, char** argv){
         if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
             ROS_INFO("Robot arrived at the place_goal");
             place_goal_state = true;
+            place_goal_msg.data = true;
             while (!ac.waitForServer(ros::Duration(5.0))) {
                 ROS_INFO("Waiting for 5 seconds at pick_goal");
-                place_marker_goal.publish(place_goal_state);
+                place_marker_goal.publish(place_goal_msg);
             }
         }
         else {
