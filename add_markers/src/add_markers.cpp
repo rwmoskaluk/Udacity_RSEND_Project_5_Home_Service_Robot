@@ -20,7 +20,7 @@ void placegoalCallback(const std_msgs::Bool::ConstPtr &place_msg) {
 int main(int argc, char **argv) {
     ros::init(argc, argv, "add_markers");
     ros::NodeHandle n;
-    ros::Rate r(1);
+    ros::Rate r(10);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
     ros::Subscriber pick_sub = n.subscribe("/pick_marker_goal", 1, pickgoalCallback);
     ros::Subscriber place_sub = n.subscribe("/place_marker_goal", 1, placegoalCallback);
@@ -112,43 +112,7 @@ int main(int argc, char **argv) {
         }
 
         marker_pub.publish(marker);
-        ros::spin();
-        // Publish the marker
-        /*
-        while (marker_pub.getNumSubscribers() < 1)
-        {
-          if (!ros::ok())
-          {
-            return 0;
-          }
-          ROS_WARN_ONCE("Please create a subscriber to the marker");
-          sleep(1);
-        }
-        */
-
-
-
-
-
-
-        // Cycle between different shapes
-        /*
-        switch (shape)
-        {
-        case visualization_msgs::Marker::CUBE:
-          shape = visualization_msgs::Marker::SPHERE;
-          break;
-        case visualization_msgs::Marker::SPHERE:
-          shape = visualization_msgs::Marker::ARROW;
-          break;
-        case visualization_msgs::Marker::ARROW:
-          shape = visualization_msgs::Marker::CYLINDER;
-          break;
-        case visualization_msgs::Marker::CYLINDER:
-          shape = visualization_msgs::Marker::CUBE;
-          break;
-        }
-        */
+        ros::spinOnce();
 
         r.sleep();
     }
