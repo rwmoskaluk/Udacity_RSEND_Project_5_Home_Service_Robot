@@ -123,13 +123,11 @@ int main(int argc, char **argv) {
 
 
             default:
-                ROS_INFO("In bad state...")
+                ROS_INFO("In bad state...");
                 break;
-
+        }
 
         marker_pub.publish(marker);
         ros::spin();
-
-        r.sleep();
     }
 }
