@@ -9,7 +9,10 @@ void robot_stateCallback(const std_msgs::Int8::ConstPtr &robot_state) {
 
     //state_value = robot_state->data;
     current_state = robot_state->data;
-    ROS_INFO("The current state goal is [%d]", robot_state->data);
+    if (current_state < 4)
+        ROS_INFO("The current state goal is [%d]", robot_state->data);
+    else
+        ROS_WARN_ONCE("completed mission");
 }
 
 
@@ -26,15 +29,18 @@ int main(int argc, char **argv) {
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
     marker.header.frame_id = "/map";
     marker.header.stamp = ros::Time::now();
+    marker.action = visualization_msgs::Marker::DELETEALL; //clear old markers for rerunning
+    marker_pub.publish(marker);
+
 
     while (ros::ok()) {
-        ROS_INFO("current state = %i", current_state);
 
         switch (current_state) {
             case 0:
                 //pick up zone marker state
                 // Set the namespace and id for this marker.  This serves to create a unique ID
                 // Any marker sent with the same namespace and id will overwrite the old one
+                ROS_INFO("current state = %i", current_state);
                 ROS_INFO("Pick marker being displayed");
 
                 marker.ns = "pick_marker";
@@ -72,11 +78,13 @@ int main(int argc, char **argv) {
 
             case 1:
                 // hide marker state
+                ROS_INFO("current state = %i", current_state);
                 ROS_INFO("Pick marker being hidden");
                 marker.action = visualization_msgs::Marker::DELETEALL;
                 break;
             case 2:
                 // wait 5 second state
+                ROS_INFO("current state = %i", current_state);
                 ROS_INFO("Simulating pickup for 5 seconds");
                 marker.action = visualization_msgs::Marker::DELETEALL;
                 break;
@@ -84,12 +92,14 @@ int main(int argc, char **argv) {
             case 3:
                 //robot navigating to place zone
                 //make sure marker is deleted in this state too
+                ROS_INFO("current state = %i", current_state);
                 ROS_INFO("robot is navigating to place zone");
                 break;
             case 4:
                 // place marker state
                 // Set the namespace and id for this marker.  This serves to create a unique ID
                 // Any marker sent with the same namespace and id will overwrite the old one
+                ROS_INFO("current state = %i", current_state);
                 ROS_INFO("Place marker being displayed");
                 marker.ns = "place_marker";
                 marker.id = 1;
@@ -131,6 +141,6 @@ int main(int argc, char **argv) {
         }
 
         marker_pub.publish(marker);
-        ros::spin();
+        ros::spinOnce();
     }
 }

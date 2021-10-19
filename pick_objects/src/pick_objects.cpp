@@ -110,7 +110,7 @@ int main(int argc, char** argv){
                 break;
             case 4:
                 //mission complete
-                ROS_INFO("Completed states");
+                ROS_WARN_INFO("Completed states");
                 state_pub.publish(state_value);
                 break;
             default:
