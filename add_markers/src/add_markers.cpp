@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
+#include "std_msgs/Bool.h"
 
 bool pick_goal = false;
 bool place_goal = false;
@@ -7,13 +8,13 @@ bool place_goal = false;
 void pickgoalCallback(const std_msgs::Bool::ConstPtr& pick_msg)
 {
     pick_goal = pick_msg->data;
-    ROS_INFO("pick goal state [%s]", pick_goal);
+    ROS_INFO("pick goal state [%i]", pick_goal);
 }
 
 void placegoalCallback(const std_msgs::Bool::ConstPtr& place_msg)
 {
     place_goal = place_msg->data;
-    ROS_INFO("place goal state [%s]", place_goal);
+    ROS_INFO("place goal state [%i]", place_goal);
 
 }
 
@@ -36,8 +37,8 @@ int main( int argc, char** argv )
 
   visualization_msgs::Marker marker;
   // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-  place_marker.header.frame_id = "/map";
-  place_marker.header.stamp = ros::Time::now();
+  marker.header.frame_id = "/map";
+  marker.header.stamp = ros::Time::now();
 
   while (ros::ok())
   {
