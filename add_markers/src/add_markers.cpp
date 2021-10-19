@@ -2,18 +2,11 @@
 #include <visualization_msgs/Marker.h>
 #include "std_msgs/Bool.h"
 
-bool pick_goal = false;
-bool place_goal = false;
+int8_t current_state = 0;
 
-void pickgoalCallback(const std_msgs::Bool::ConstPtr &pick_msg) {
-    pick_goal = pick_msg->data;
-    ROS_INFO("pick goal state [%i]", pick_goal);
-}
-
-void placegoalCallback(const std_msgs::Bool::ConstPtr &place_msg) {
-    place_goal = place_msg->data;
-    ROS_INFO("place goal state [%i]", place_goal);
-
+void robot_stateCallback(const std_msgs::Int8::ConstPtr &robot_state) {
+    current_state = robot_state->data;
+    ROS_INFO("The current state goal is [%i]", current_state);
 }
 
 
@@ -22,101 +15,120 @@ int main(int argc, char **argv) {
     ros::NodeHandle n;
     ros::Rate r(10);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    ros::Subscriber pick_sub = n.subscribe("/pick_marker_goal", 1, pickgoalCallback);
-    ros::Subscriber place_sub = n.subscribe("/place_marker_goal", 1, placegoalCallback);
+    ros::Subscriber state_sub = n.subscribe("/robot_goal_state", 100, robot_stateCallback);
 
     // Set our initial shape type to be a cube
     uint32_t shape = visualization_msgs::Marker::CUBE;
-    bool display_pick = true;
-    bool display_place = false;
-    bool pickup_reached = false;
-    bool place_reached = false;
-
     visualization_msgs::Marker marker;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
     marker.header.frame_id = "/map";
     marker.header.stamp = ros::Time::now();
 
     while (ros::ok()) {
-        ROS_INFO("display_pick = [%i]", display_pick);
-        ROS_INFO("pick_goal = [%i]", pick_goal);
-        ROS_INFO("display_place = [%i]", display_place);
-        ROS_INFO("place_goal = [%i]", place_goal);
-        if (display_pick && !pick_goal) {
-            // Set the namespace and id for this marker.  This serves to create a unique ID
-            // Any marker sent with the same namespace and id will overwrite the old one
-            marker.ns = "pick_marker";
-            marker.id = 0;
+        ROS_INFO("current state = %i", current_state);
 
-            // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
-            marker.type = shape;
+        switch (current_state) {
+            case 0:
+                //pick up zone marker state
+                // Set the namespace and id for this marker.  This serves to create a unique ID
+                // Any marker sent with the same namespace and id will overwrite the old one
+                ROS_INFO("Pick marker being displayed");
 
-            // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
-            marker.action = visualization_msgs::Marker::ADD;
+                marker.ns = "pick_marker";
+                marker.id = 0;
 
-            // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-            marker.pose.position.x = 2;
-            marker.pose.position.y = -1;
-            marker.pose.position.z = 0.1;
-            marker.pose.orientation.x = 0.0;
-            marker.pose.orientation.y = 0.0;
-            marker.pose.orientation.z = 0.0;
-            marker.pose.orientation.w = 1.0;
+                // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
+                marker.type = shape;
 
-            // Set the scale of the marker -- 1x1x1 here means 1m on a side
-            marker.scale.x = 0.2;
-            marker.scale.y = 0.2;
-            marker.scale.z = 0.2;
+                // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
+                marker.action = visualization_msgs::Marker::ADD;
 
-            // Set the color -- be sure to set alpha to something non-zero!
+                // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
+                marker.pose.position.x = 2.0;
+                marker.pose.position.y = -1.0;
+                marker.pose.position.z = 0.1;
+                marker.pose.orientation.x = 0.0;
+                marker.pose.orientation.y = 0.0;
+                marker.pose.orientation.z = 0.0;
+                marker.pose.orientation.w = 1.0;
 
-            marker.color.r = 1.0f;
-            marker.color.g = 0.0f;
-            marker.color.b = 0.0f;
-            marker.color.a = 1.0;
+                // Set the scale of the marker -- 1x1x1 here means 1m on a side
+                marker.scale.x = 0.2;
+                marker.scale.y = 0.2;
+                marker.scale.z = 0.2;
 
-            marker.lifetime = ros::Duration();
-        }
+                // Set the color -- be sure to set alpha to something non-zero!
 
-        if (display_place && !place_goal) {
-            // Set the namespace and id for this marker.  This serves to create a unique ID
-            // Any marker sent with the same namespace and id will overwrite the old one
-            marker.ns = "place_marker";
-            marker.id = 1;
+                marker.color.r = 1.0f;
+                marker.color.g = 0.0f;
+                marker.color.b = 0.0f;
+                marker.color.a = 1.0;
 
-            // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
-            marker.type = shape;
+                marker.lifetime = ros::Duration();
+                break;
 
-            // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
-            marker.action = visualization_msgs::Marker::ADD;
+            case 1:
+                // hide marker state
+                ROS_INFO("Pick marker being hidden");
+                marker.action = visualization_msgs::Marker::DELETEALL;
+                break;
+            case 2:
+                // wait 5 second state
+                ROS_INFO("Simulating pickup for 5 seconds");
+                marker.action = visualization_msgs::Marker::DELETEALL;
+                break;
 
-            // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-            marker.pose.position.x = -4;
-            marker.pose.position.y = 2;
-            marker.pose.position.z = 0.1;
-            marker.pose.orientation.x = 0.0;
-            marker.pose.orientation.y = 0.0;
-            marker.pose.orientation.z = 0.0;
-            marker.pose.orientation.w = 1.0;
+            case 3:
+                //robot navigating to place zone
+                //make sure marker is deleted in this state too
+                ROS_INFO("robot is navigating to place zone");
+                break;
+            case 4:
+                // place marker state
+                // Set the namespace and id for this marker.  This serves to create a unique ID
+                // Any marker sent with the same namespace and id will overwrite the old one
+                ROS_INFO("Place marker being displayed");
+                marker.ns = "place_marker";
+                marker.id = 1;
 
-            // Set the scale of the marker -- 1x1x1 here means 1m on a side
-            marker.scale.x = 0.2;
-            marker.scale.y = 0.2;
-            marker.scale.z = 0.2;
+                // Set the marker type.  Initially this is CUBE, and cycles between that and SPHERE, ARROW, and CYLINDER
+                marker.type = shape;
 
-            // Set the color -- be sure to set alpha to something non-zero!
+                // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
+                marker.action = visualization_msgs::Marker::ADD;
 
-            marker.color.r = 0.0f;
-            marker.color.g = 1.0f;
-            marker.color.b = 0.0f;
-            marker.color.a = 1.0;
+                // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
+                marker.pose.position.x = -4.0;
+                marker.pose.position.y = 1.0;
+                marker.pose.position.z = 0.1;
+                marker.pose.orientation.x = 0.0;
+                marker.pose.orientation.y = 0.0;
+                marker.pose.orientation.z = 0.0;
+                marker.pose.orientation.w = 1.0;
 
-            marker.lifetime = ros::Duration();
+                // Set the scale of the marker -- 1x1x1 here means 1m on a side
+                marker.scale.x = 0.2;
+                marker.scale.y = 0.2;
+                marker.scale.z = 0.2;
 
-        }
+                // Set the color -- be sure to set alpha to something non-zero!
+
+                marker.color.r = 0.0f;
+                marker.color.g = 1.0f;
+                marker.color.b = 0.0f;
+                marker.color.a = 1.0;
+
+                marker.lifetime = ros::Duration();
+                break;
+
+
+            default:
+                ROS_INFO("In bad state...")
+                break;
+
 
         marker_pub.publish(marker);
-        ros::spinOnce();
+        ros::spin();
 
         r.sleep();
     }
