@@ -35,4 +35,4 @@ $term_name " rosrun add_markers add_markers_node " &
 
 sleep 5
 
-$term_name " roslaunch turtlebot_rviz_launchers view_navigation.launch rviz_config_file:=$rviz_path/rviz_final.config "
+$term_name " roslaunch turtlebot_rviz_launchers view_navigation.launch -d $rviz_path/rviz.rviz "
