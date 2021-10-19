@@ -16,7 +16,7 @@ int main(int argc, char** argv){
     ros::NodeHandle n;
     ros::Rate r(5);
 
-    ros::Publisher state_pub = n.advertise<std_msgs::Int8>("robot_goal_state", 100);
+    ros::Publisher state_pub = n.advertise<std_msgs::Int8>("robot_goal_state", 1);
 
     //tell the action client that we want to spin a thread by default
     MoveBaseClient ac("move_base", true);

@@ -19,9 +19,9 @@ void robot_stateCallback(const std_msgs::Int8::ConstPtr &robot_state) {
 int main(int argc, char **argv) {
     ros::init(argc, argv, "add_markers");
     ros::NodeHandle n;
-    ros::Rate r(10);
+    ros::Rate r(5);
     ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-    ros::Subscriber state_sub = n.subscribe("/robot_goal_state", 100, robot_stateCallback);
+    ros::Subscriber state_sub = n.subscribe("/robot_goal_state", 1, robot_stateCallback);
 
     // Set our initial shape type to be a cube
     uint32_t shape = visualization_msgs::Marker::CUBE;
@@ -80,25 +80,14 @@ int main(int argc, char **argv) {
                 // hide marker state
                 ROS_WARN_ONCE("current state = %i", current_state);
                 ROS_WARN_ONCE("Pick marker being hidden");
-                //marker.action = visualization_msgs::Marker::DELETE; //doesn't seem to work as intended
-                marker.ns = "pick_marker";
-                marker.id = 0;
-                marker.action = visualization_msgs::Marker::ADD;
-                marker.color.a = 0.0;
-
+                marker.action = visualization_msgs::Marker::DELETE;
                 marker_pub.publish(marker);
                 break;
             case 2:
                 // wait 5 second state
                 ROS_WARN_ONCE("current state = %i", current_state);
                 ROS_WARN_ONCE("Simulating pickup for 5 seconds");
-                //marker.action = visualization_msgs::Marker::DELETE; //doesn't seem to work as intended
-                marker.ns = "pick_marker";
-                marker.id = 0;
-                marker.action = visualization_msgs::Marker::ADD;
-                marker.color.a = 0.0;
-
-
+                marker.action = visualization_msgs::Marker::DELETE;
                 marker_pub.publish(marker);
                 break;
 
