@@ -6,14 +6,15 @@
 // Define a client for to send goal requests to the move_base server through a SimpleActionClient
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
-int8_t current_state = 0;
+std_msgs::Int8 state_value;
+int current_state = 0;
 
 int main(int argc, char** argv){
     // Initialize the simple_navigation_goals node
     ros::init(argc, argv, "pick_objects");
 
     ros::NodeHandle n;
-    ros::Rate r(10);
+    ros::Rate r(5);
 
     ros::Publisher state_pub = n.advertise<std_msgs::Int8>("robot_goal_state", 100);
 
@@ -59,8 +60,9 @@ int main(int argc, char** argv){
             // Check if the robot reached the pick_goal
             if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
                 ROS_INFO("Robot arrived at pick_goal");
-                current_state = 2;
-                state_pub.publish(current_state);
+                current_state = 1;
+                state_value.data = 1;
+                state_pub.publish(state_value);
             } else {
                 ROS_INFO("The robot failed to move to the pick_goal for some reason");
             }
@@ -69,14 +71,16 @@ int main(int argc, char** argv){
             //hide marker after pickup
             ROS_INFO("Hiding pick marker");
             current_state = 2;
-            state_pub.publish(current_state);
+            state_value.data = 2;
+            state_pub.publish(state_value);
             break;
         case 2:
             //wait 5 seconds after marker is hidden
             ROS_INFO("waiting 5 seconds");
-            r.sleep(5);
+            r.sleep();
             current_state = 3;
-            state_pub.publish(current_state);
+            state_value.data = 3;
+            state_pub.publish(state_value);
             break;
         case 3:
             //place display state
@@ -97,7 +101,8 @@ int main(int argc, char** argv){
             if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED) {
                 ROS_INFO("Robot arrived at the place_goal");
                 current_state = 4;
-                state_pub.publish(current_state);
+                state_value.data = 4;
+                state_pub.publish(state_value);
             } else {
                 ROS_INFO("The base failed to move to the place_goal for some reason");
             }
@@ -105,7 +110,7 @@ int main(int argc, char** argv){
         case 4:
             //mission complete
             ROS_INFO("Completed states");
-            state_pub.publish(current_state);
+            state_pub.publish(state_value);
             break;
         default:
             break;

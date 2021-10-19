@@ -2,11 +2,14 @@
 #include <visualization_msgs/Marker.h>
 #include "std_msgs/Int8.h"
 
-int8_t current_state = 0;
+int current_state = 0;
 
 void robot_stateCallback(const std_msgs::Int8::ConstPtr &robot_state) {
-    current_state = robot_state->data;
-    ROS_INFO("The current state goal is [%i]", current_state);
+    std_msgs::Int8 state_value;
+
+    state_value = robot_state->data;
+    current_state = state_value.data;
+    ROS_INFO("The current state goal is [%d]", robot_state->data);
 }
 
 
