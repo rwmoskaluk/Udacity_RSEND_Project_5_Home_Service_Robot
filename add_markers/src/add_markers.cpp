@@ -4,22 +4,17 @@
 bool pick_goal = false;
 bool place_goal = false;
 
-void pickgoalCallback(const std_msgs::Bool pick_msg)
+void pickgoalCallback(const std_msgs::Bool::ConstPtr& pick_msg)
 {
-    ROS_INFO("pick msg state [%s]", pick_msg);
+    pick_goal = pick_msg->data;
     ROS_INFO("pick goal state [%s]", pick_goal);
-    if (pick_msg) {
-        pick_goal = true;
-    }
 }
 
-void placegoalCallback(const std_msgs::Bool place_msg)
+void placegoalCallback(const std_msgs::Bool::ConstPtr& place_msg)
 {
-    ROS_INFO("place msg state [%s]", place_msg);
+    place_goal = place_msg->data;
     ROS_INFO("place goal state [%s]", place_goal);
-    if (place_msg) {
-        place_goal = true;
-    }
+
 }
 
 
