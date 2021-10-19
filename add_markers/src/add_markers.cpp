@@ -38,6 +38,10 @@ int main(int argc, char **argv) {
     marker.header.stamp = ros::Time::now();
 
     while (ros::ok()) {
+        ROS_INFO("display_pick = [%i]", display_pick);
+        ROS_INFO("pick_goal = [%i]", pick_goal);
+        ROS_INFO("display_place = [%i]", display_place);
+        ROS_INFO("place_goal = [%i]", place_goal);
         if (display_pick && !pick_goal) {
             // Set the namespace and id for this marker.  This serves to create a unique ID
             // Any marker sent with the same namespace and id will overwrite the old one
