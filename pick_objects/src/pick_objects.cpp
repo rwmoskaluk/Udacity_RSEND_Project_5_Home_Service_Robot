@@ -14,8 +14,8 @@ int main(int argc, char** argv){
 
     ros::NodeHandle n;
 
-    ros::Publisher pick_marker_goal = n.advertise<std_msgs::bool>("pick_goal", 10);
-    ros::Publisher place_marker_goal = n.advertise<std_msgs::bool>("place_goal", 10);
+    ros::Publisher pick_marker_goal = n.advertise<std_msgs::Bool>("pick_goal", 10);
+    ros::Publisher place_marker_goal = n.advertise<std_msgs::Bool>("place_goal", 10);
 
     //tell the action client that we want to spin a thread by default
     MoveBaseClient ac("move_base", true);
