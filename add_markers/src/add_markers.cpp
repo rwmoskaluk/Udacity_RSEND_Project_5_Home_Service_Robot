@@ -1,6 +1,27 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
 
+bool pick_goal = false;
+bool place_goal = false;
+
+void pickgoalCallback(const std_msgs::Bool pick_msg)
+{
+    ROS_INFO("pick msg state [%s]", pick_msg);
+    ROS_INFO("pick goal state [%s]", pick_goal);
+    if (pick_msg) {
+        pick_goal = true;
+    }
+}
+
+void placegoalCallback(const std_msgs::Bool place_msg)
+{
+    ROS_INFO("place msg state [%s]", place_msg);
+    ROS_INFO("place goal state [%s]", place_goal);
+    if (place_msg) {
+        place_goal = true;
+    }
+}
+
 
 int main( int argc, char** argv )
 {
@@ -8,8 +29,8 @@ int main( int argc, char** argv )
   ros::NodeHandle n;
   ros::Rate r(1);
   ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-  ros::Subscriber pick_goal = n.subscribe("/pick_marker_goal");
-  ros::Subscriber place_goal = n.subscribe("/place_marker_goal");
+  ros::Subscriber pick_sub = n.subscribe("/pick_marker_goal", 10, pickgoalCallback);
+  ros::Subscriber place_sub = n.subscribe("/place_marker_goal", 10, placegoalCallback);
 
   // Set our initial shape type to be a cube
   uint32_t shape = visualization_msgs::Marker::CUBE;
