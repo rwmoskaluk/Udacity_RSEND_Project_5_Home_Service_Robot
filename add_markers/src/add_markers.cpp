@@ -40,8 +40,8 @@ int main(int argc, char **argv) {
                 //pick up zone marker state
                 // Set the namespace and id for this marker.  This serves to create a unique ID
                 // Any marker sent with the same namespace and id will overwrite the old one
-                ROS_INFO("current state = %i", current_state);
-                ROS_INFO("Pick marker being displayed");
+                ROS_WARN_ONCE("current state = %i", current_state);
+                ROS_WARN_ONCE("Pick marker being displayed");
 
                 marker.ns = "pick_marker";
                 marker.id = 0;
@@ -78,15 +78,17 @@ int main(int argc, char **argv) {
 
             case 1:
                 // hide marker state
-                ROS_INFO("current state = %i", current_state);
-                ROS_INFO("Pick marker being hidden");
-                marker.action = visualization_msgs::Marker::DELETEALL;
+                ROS_WARN_ONCE("current state = %i", current_state);
+                ROS_WARN_ONCE("Pick marker being hidden");
+                marker.action = visualization_msgs::Marker::DELETE;
+                marker_pub.publish(marker);
                 break;
             case 2:
                 // wait 5 second state
-                ROS_INFO("current state = %i", current_state);
-                ROS_INFO("Simulating pickup for 5 seconds");
-                marker.action = visualization_msgs::Marker::DELETEALL;
+                ROS_WARN_ONCE("current state = %i", current_state);
+                ROS_WARN_ONCE("Simulating pickup for 5 seconds");
+                marker.action = visualization_msgs::Marker::DELETE;
+                marker_pub.publish(marker);
                 break;
 
             case 3:
@@ -99,8 +101,8 @@ int main(int argc, char **argv) {
                 // place marker state
                 // Set the namespace and id for this marker.  This serves to create a unique ID
                 // Any marker sent with the same namespace and id will overwrite the old one
-                ROS_INFO("current state = %i", current_state);
-                ROS_INFO("Place marker being displayed");
+                ROS_WARN_ONCE("current state = %i", current_state);
+                ROS_WARN_ONCE("Place marker being displayed");
                 marker.ns = "place_marker";
                 marker.id = 1;
 
