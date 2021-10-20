@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
             case 0:
                 marker.action = visualization_msgs::Marker::ADD;
                 marker_pub.publish(marker);
-                sleep(10);
+                sleep(10); //set so rviz can load in Udacity workspace VM
                 current_state = 1;
                 break;
             case 1:

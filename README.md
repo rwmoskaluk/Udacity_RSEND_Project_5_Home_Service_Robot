@@ -4,7 +4,7 @@
 [image2]: ./pictures/3dmap_top.png "Gazebo 3d Map Top view"
 [image3]: ./pictures/gslam_map_result.png "Gslam map result"
 [image4]: ./pictures/Dropoff_location.png "Drop off"
-[image5]: ./pictures/Example_running_dropoff.png "Pickup"
+[image5]: ./pictures/Pickup_location.png "Pickup"
 [image6]: ./pictures/Example_running_dropoff.png "AMCL example"
 
 
@@ -66,7 +66,7 @@ The objective of the robot is as follows:
 5. Place a green cube at the location
 
 The pickup location is shown below next to the bookshelf by the orange room.
-![alt text][image6]
+![alt text][image5]
 
 
 The dropoff location is shown below next to the red room corridor.
