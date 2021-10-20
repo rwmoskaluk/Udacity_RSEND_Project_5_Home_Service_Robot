@@ -45,14 +45,16 @@ int main(int argc, char **argv) {
 
     marker.lifetime = ros::Duration();
     marker_pub.publish(marker);
-    duration.sleep();
-    current_state = 1;
 
     while (ros::ok()) {
-        marker_pub.publish(marker);
 
         switch (current_state) {
-
+            case 0:
+                marker.action = visualization_msgs::Marker::ADD;
+                marker_pub.publish(marker);
+                sleep(10);
+                current_state = 1;
+                break;
             case 1:
                 // pausing for 5 seconds
                 ROS_WARN_ONCE("current state = %i", current_state);
@@ -117,6 +119,7 @@ int main(int argc, char **argv) {
                 ROS_INFO("In bad state...");
                 break;
         }
+        marker_pub.publish(marker);
     }
 }
 
