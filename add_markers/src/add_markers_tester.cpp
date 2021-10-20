@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
                 marker.color.a = 1.0;
 
                 marker.lifetime = ros::Duration();
+                marker_pub.publish(marker);
                 current_state = 1;
                 break;
 

@@ -75,14 +75,13 @@ The dropoff location is shown below next to the red room corridor.
 
 
 
-## Example Running 
-![alt text][image1]
-
+## Example Running
 Example running where delays are disabled
 <img src="pictures/Example_running_no_delays.gif?raw=true" width="720px">
 
-Example running with delay at pickup
-<img src="pictures/Example_running_delays.gif?raw=true" width="720px">
+Example running with delay at pickup and drop off
+<img src="pictures/Example_running_delays_1.gif?raw=true" width="720px">
+<img src="pictures/Example_running_delays_2.gif?raw=true" width="720px">
 
 
 
