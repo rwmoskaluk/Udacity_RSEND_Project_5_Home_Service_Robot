@@ -15,55 +15,55 @@ int main(int argc, char **argv) {
     visualization_msgs::Marker marker;
     marker.header.frame_id = "/map";
     marker.header.stamp = ros::Time::now();
-    marker.action = visualization_msgs::Marker::DELETEALL; //clear old markers for rerunning
+
+    ROS_WARN_ONCE("current state = %i", current_state);
+    ROS_WARN_ONCE("Pick marker being displayed");
+
+    marker.ns = "pick_marker";
+    marker.id = 0;
+
+    marker.type = shape;
+
+    marker.action = visualization_msgs::Marker::ADD;
+
+    marker.pose.position.x = 2.0;
+    marker.pose.position.y = -1.0;
+    marker.pose.position.z = 0.1;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+
+    marker.scale.x = 0.2;
+    marker.scale.y = 0.2;
+    marker.scale.z = 0.2;
+
+    marker.color.r = 1.0f;
+    marker.color.g = 0.0f;
+    marker.color.b = 0.0f;
+    marker.color.a = 1.0;
+
+    marker.lifetime = ros::Duration();
     marker_pub.publish(marker);
+    duration.sleep();
+    current_state = 1;
 
     while (ros::ok()) {
+        marker_pub.publish(marker);
 
         switch (current_state) {
-            case 0:
-                //pick up zone marker state
-                ROS_WARN_ONCE("current state = %i", current_state);
-                ROS_WARN_ONCE("Pick marker being displayed");
-
-                marker.ns = "pick_marker";
-                marker.id = 0;
-
-                marker.type = shape;
-
-                marker.action = visualization_msgs::Marker::ADD;
-
-                marker.pose.position.x = 2.0;
-                marker.pose.position.y = -1.0;
-                marker.pose.position.z = 0.1;
-                marker.pose.orientation.x = 0.0;
-                marker.pose.orientation.y = 0.0;
-                marker.pose.orientation.z = 0.0;
-                marker.pose.orientation.w = 1.0;
-
-                marker.scale.x = 0.2;
-                marker.scale.y = 0.2;
-                marker.scale.z = 0.2;
-
-                marker.color.r = 1.0f;
-                marker.color.g = 0.0f;
-                marker.color.b = 0.0f;
-                marker.color.a = 1.0;
-
-                marker.lifetime = ros::Duration();
-                marker_pub.publish(marker);
-                current_state = 1;
-                break;
 
             case 1:
                 // pausing for 5 seconds
                 ROS_WARN_ONCE("current state = %i", current_state);
                 ROS_WARN_ONCE("Pausing 5 seconds");
+                marker.action = visualization_msgs::Marker::ADD;
+                marker_pub.publish(marker);
                 duration.sleep();
                 current_state = 2;
                 break;
             case 2:
-                // hding the marker
+                // hiding the marker
                 ROS_WARN_ONCE("current state = %i", current_state);
                 ROS_WARN_ONCE("Hiding the pick marker");
                 marker.action = visualization_msgs::Marker::DELETE;
@@ -117,9 +117,6 @@ int main(int argc, char **argv) {
                 ROS_INFO("In bad state...");
                 break;
         }
-
-        marker_pub.publish(marker);
-        ros::spinOnce();
     }
 }
 
