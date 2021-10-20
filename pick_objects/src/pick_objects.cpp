@@ -10,11 +10,10 @@ std_msgs::Int8 state_value;
 int current_state = 0;
 
 int main(int argc, char** argv){
-    // Initialize the simple_navigation_goals node
     ros::init(argc, argv, "pick_objects");
 
     ros::NodeHandle n;
-    ros::Rate r(5);
+    ros::Duration duration(5.0);
 
     ros::Publisher state_pub = n.advertise<std_msgs::Int8>("robot_goal_state", 1);
 
@@ -44,7 +43,6 @@ int main(int argc, char** argv){
         switch (current_state) {
             case 0:
                 //pick display state, setting pick goal
-                // Define a position and orientation for the robot to reach
                 pick_goal.target_pose.pose.position.x = 2.0;
                 pick_goal.target_pose.pose.position.y = -1.0;
                 pick_goal.target_pose.pose.position.z = 0.1;
@@ -78,14 +76,13 @@ int main(int argc, char** argv){
             case 2:
                 //wait 5 seconds after marker is hidden
                 ROS_INFO("waiting 5 seconds");
-                r.sleep();
+                duration.sleep();
                 current_state = 3;
                 state_value.data = 3;
                 state_pub.publish(state_value);
                 break;
             case 3:
                 //place display state
-                // Define a position and orientation for the robot to reach
                 place_goal.target_pose.pose.position.x = -4.0;
                 place_goal.target_pose.pose.position.y = 1.0;
                 place_goal.target_pose.pose.position.z = 0.1;

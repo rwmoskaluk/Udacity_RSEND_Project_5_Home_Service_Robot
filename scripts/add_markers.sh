@@ -10,6 +10,8 @@ fi
 
 world_path="$HOME/catkin_ws/src/worlds/smallworld.world"
 map_path="$HOME/catkin_ws/src/map/map.yaml"
+rviz_path="$HOME/catkin_ws/src/rvizConfig/rviz.rviz"
+
 
 $term_name "killall gzserver && killall gazebo " &
 sleep 1
@@ -18,7 +20,7 @@ $term_name " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$worl
 
 sleep 5
 
-$term_name " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=$map_path/map.yaml " &
+$term_name " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=$map_path " &
 
 sleep 5
 
@@ -26,4 +28,4 @@ $term_name " rosrun add_markers add_markers_node_tester " &
 
 sleep 5
 
-$term_name " roslaunch turtlebot_rviz_launchers view_navigation.launch"
+$term_name " rosrun rviz rviz -d $rviz_path "
