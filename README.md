@@ -113,6 +113,9 @@ It can be seen that the map generated from `gmapping` is padded for path plannin
 ![alt text][image6]
 
 
+For this project a state machine was utilized for the previously mentioned goals that the robot had to accomplish.  A publisher for the current state based on the feedback from the `actionClientLib` when commanding positions in the environment was utilized. This was then coupled with a subscriber for generating the environment markers in `Rviz` given the current state of the robot.
+
+
 # Notes and Learnings
 
 To save time creating a Udacity workspace script `workspace_config.sh` was generated to configure the Udacity workspace each time.
