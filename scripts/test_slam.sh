@@ -9,9 +9,11 @@ else
   term_name="gnome-terminal -- bash -c"
 fi
 
-world_path="$HOME/catkin_ws/src/worlds/smallworld.world"
+known_path=$(rospack find pick_objects)
+root_path=$(cd $known_path && cd .. && pwd)
+world_path="$root_path/worlds/smallworld.world"
 
-(cd $HOME/catkin_ws/ && source devel/setup.bash)
+(cd $root_path && cd .. && source devel/setup.bash)
 
 $term_name "killall gzserver && killall gazebo " &
 sleep 1

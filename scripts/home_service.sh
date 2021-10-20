@@ -8,12 +8,14 @@ else
   term_name="gnome-terminal -- bash -c"
 fi
 
-world_path="$HOME/catkin_ws/src/worlds/smallworld.world"
-map_path="$HOME/catkin_ws/src/map/map.yaml"
-rviz_path="$HOME/catkin_ws/src/rvizConfig/rviz.rviz"
+known_path=$(rospack find pick_objects)
+root_path=$(cd $known_path && cd .. && pwd)
+world_path="$root_path/worlds/smallworld.world"
+map_path="$root_path/map/map.yaml"
+rviz_path="root_path/rvizConfig/rviz.rviz"
 
 
-(cd $HOME/catkin_ws/ && source devel/setup.bash)
+(cd $root_path && cd .. && source devel/setup.bash)
 
 
 $term_name "killall gzserver && killall gazebo " &
