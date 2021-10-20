@@ -12,7 +12,7 @@ known_path=$(rospack find pick_objects)
 root_path=$(cd $known_path && cd .. && pwd)
 world_path="$root_path/worlds/smallworld.world"
 map_path="$root_path/map/map.yaml"
-rviz_path="root_path/rvizConfig/rviz.rviz"
+rviz_path="$root_path/rvizConfig/rviz.rviz"
 
 
 (cd $root_path && cd .. && source devel/setup.bash)
